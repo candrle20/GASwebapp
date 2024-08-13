@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#Download gas web zip file from S3
+aws s3 cp s3://mpcs-cc-students/candrle/gas_web_server.zip /home/ec2-user/mpcs-cc
+
+#Unzip gas source code
+unzip /home/ec2-user/mpcs-cc/gas_web_server.zip -d /home/ec2-user/mpcs-cc
+
+#Change file ownership
+chown -R ec2-user:ec2-user /home/ec2-user/mpcs-cc/gas
+
+#Download the updated TLS certificates from S3
+aws s3 cp s3://mpcs-cc-resources/ssl/fullchain.pem /home/ec2-user/mpcs-cc
+aws s3 cp s3://mpcs-cc-resources/ssl/privkey.pem /home/ec2-user/mpcs-cc
+
+#Activate Virtual env
+source /home/ec2-user/mpcs-cc/bin/activate
+
+#Run web server
+sudo -u ec2-user /home/ec2-user/mpcs-cc/gas/web/run_gas.sh &

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#Download gas web zip file from S3
+aws s3 cp s3://mpcs-cc-students/candrle/gas_annotator.zip /home/ec2-user/mpcs-cc
+
+#Unzip gas source code
+unzip /home/ec2-user/mpcs-cc/gas_annotator.zip -d /home/ec2-user/mpcs-cc
+
+#Change file ownership
+chown -R ec2-user:ec2-user /home/ec2-user/mpcs-cc/ann
+chmod +x /home/ec2-user/mpcs-cc/ann/run_ann.sh
+
+#Virtual env
+source /home/ec2-user/mpcs-cc/bin/activate
+
+#Run ann
+sudo -u ec2-user ./home/ec2-user/mpcs-cc/ann/run_ann.sh &
